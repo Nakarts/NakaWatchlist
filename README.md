@@ -1,2 +1,0 @@
-# NakaWatchlist
-Ma watchlist
