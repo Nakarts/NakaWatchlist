@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0b0f1a"/>
+<title>Ma Watchlist</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ef4444'/%3E%3Cstop offset='1' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M22 18l24 14-24 14z' fill='white'/%3E%3C/svg%3E"/>
+<style>
+:root{--bg:#f5f7fb;--surface:#fff;--surface-2:#eef1f8;--text:#0e1220;--muted:#5b6478;--border:#e3e6f0;--primary:#ef4444;--primary-2:#f59e0b;--accent:#facc15;--ok:#16c784;--warn:#f59e0b;--danger:#ef4444;--shadow:0 10px 30px -12px rgba(20,25,50,.18);--radius:18px}
+[data-theme="dark"]{--bg:#0b0f1a;--surface:#121829;--surface-2:#1a2138;--text:#eef1ff;--muted:#9aa3bd;--border:#26304a;--shadow:0 10px 40px -10px rgba(0,0,0,.6)}
+[data-palette="ocean"]{--primary:#2563eb;--primary-2:#06b6d4;--accent:#22d3ee}
+[data-palette="forest"]{--primary:#16a34a;--primary-2:#65a30d;--accent:#84cc16}
+[data-palette="sunset"]{--primary:#f43f5e;--primary-2:#f97316;--accent:#fbbf24}
+[data-palette="grape"]{--primary:#7c3aed;--primary-2:#a855f7;--accent:#ec4899}
+[data-palette="fire"]{--primary:#ef4444;--primary-2:#f59e0b;--accent:#facc15}
+[data-palette="mint"]{--primary:#10b981;--primary-2:#06b6d4;--accent:#34d399}
+[data-palette="rose"]{--primary:#e11d48;--primary-2:#db2777;--accent:#fb7185}
+[data-palette="midnight"]{--primary:#6366f1;--primary-2:#8b5cf6;--accent:#22d3ee}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Inter,sans-serif}
+body{padding-top:env(safe-area-inset-top)}
+.app{max-width:1100px;margin:0 auto;padding:14px}
+header.top{display:flex;align-items:center;gap:10px;padding:6px 4px 14px}
+.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:#fff;box-shadow:var(--shadow)}
+.logo svg{width:26px;height:26px}
+.brand{font-weight:900;font-size:20px;line-height:1.05}
+.brand small{display:block;font-weight:600;color:var(--muted);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-top:2px}
+.spacer{flex:1}
+.icon-btn{width:40px;height:40px;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text);font-size:22px;line-height:1}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.title{font-size:18px;font-weight:800;margin:0 0 8px}
+.sub{color:var(--muted);font-size:13px}
+.chip{padding:8px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;color:var(--text)}
+.chip.active{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;border-color:transparent}
+.chip.sm{padding:5px 10px;font-size:12px}
+.btn{padding:9px 14px;border-radius:11px;border:none;font-weight:700;cursor:pointer;background:var(--surface-2);color:var(--text)}
+.btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 6px 16px -6px var(--primary)}
+.btn.ghost{background:transparent;border:1px solid var(--border)}
+.btn.sm{padding:6px 10px;font-size:12px;border-radius:9px}
+input,select{background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:11px;font-size:14px;width:100%;font-family:inherit;outline:none}
+input:focus,select:focus{border-color:var(--primary)}
+.kpi{background:linear-gradient(135deg,var(--surface),var(--surface-2));border-radius:14px;padding:12px;border:1px solid var(--border);text-align:center}
+.kpi b{display:block;font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--primary-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi span{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-top:2px;display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.table-wrap{overflow:auto;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;min-width:720px}
+thead th{position:sticky;top:0;background:var(--surface-2);padding:10px 12px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);white-space:nowrap}
+thead th:hover{color:var(--text)}
+thead th.sorted{color:var(--primary)}
+thead th.sorted::after{content:attr(data-dir);margin-left:4px;font-size:9px}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+td{padding:9px 12px;vertical-align:middle;font-size:13px}
+.td-titre{font-weight:600}
+.td-ep,.td-temps{text-align:right;font-weight:700;font-size:12px;white-space:nowrap}
+.td-temps{color:var(--primary)}
+.td-annee{text-align:center;color:var(--muted);font-size:12px}
+.td-genre{color:var(--muted);font-size:12px}
+.badge{display:inline-block;font-size:10px;padding:3px 9px;border-radius:999px;font-weight:700;letter-spacing:.04em;white-space:nowrap;border:1px solid transparent}
+.b-anime{background:color-mix(in srgb,#3b82f6 18%,transparent);color:#3b82f6;border-color:color-mix(in srgb,#3b82f6 30%,transparent)}
+.b-serie{background:color-mix(in srgb,#a78bfa 18%,transparent);color:#a78bfa;border-color:color-mix(in srgb,#a78bfa 30%,transparent)}
+.b-film{background:color-mix(in srgb,#16c784 18%,transparent);color:#16c784;border-color:color-mix(in srgb,#16c784 30%,transparent)}
+.b-fanim{background:color-mix(in srgb,#2dd4bf 18%,transparent);color:#2dd4bf;border-color:color-mix(in srgb,#2dd4bf 30%,transparent)}
+.statut-select{background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:11px;padding:4px 8px;cursor:pointer;outline:none;font-weight:600;width:auto}
+.statut-select.vu{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+.statut-select.encours{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.statut-select.avoir{color:var(--muted)}
+.row-actions{display:flex;gap:4px;justify-content:flex-end}
+.iact{background:transparent;border:1px solid var(--border);border-radius:7px;width:28px;height:28px;cursor:pointer;color:var(--muted);font-size:13px;display:inline-grid;place-items:center}
+.iact:hover{color:var(--primary);border-color:var(--primary)}
+.iact.danger:hover{color:var(--danger);border-color:var(--danger)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.form-grid .full{grid-column:1 / -1}
+.empty{text-align:center;padding:3rem;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;z-index:100}
+.modal.on{display:flex}
+.sheet{background:var(--surface);width:100%;max-width:760px;margin:0 auto;border-radius:24px 24px 0 0;padding:18px;max-height:90vh;overflow:auto}
+hr{border:none;border-top:1px solid var(--border);margin:14px 0}
+.swatch{width:36px;height:36px;border-radius:10px;cursor:pointer;border:2px solid transparent}
+.swatch.on{border-color:var(--text)}
+@media(max-width:700px){
+  .td-annee,.td-genre,thead th:nth-child(4),thead th:nth-child(6),td:nth-child(4),td:nth-child(6){display:none}
+  table{min-width:520px}
+  .brand{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="logo"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+    <div><div class="brand">Ma Watchlist<small>Films · Séries · Animés</small></div></div>
+    <div class="spacer"></div>
+    <button class="icon-btn" id="addBtn" title="Ajouter">＋</button>
+    <button class="icon-btn" id="themeBtn" title="Thème">◐</button>
+    <button class="icon-btn" id="paletteBtn" title="Palette">◉</button>
+  </header>
+
+  <div class="card">
+    <div class="kpis" id="stats"></div>
+  </div>
+
+  <div class="card">
+    <input id="search" placeholder="Rechercher un titre, un genre…"/>
+    <div class="row" id="ftype" style="margin-top:10px">
+      <span class="sub" style="font-weight:700;text-transform:uppercase;font-size:10px;letter-spacing:.1em">Type</span>
+      <button class="chip sm active" data-t="all">Tous</button>
+      <button class="chip sm" data-t="anime">Animé</button>
+      <button class="chip sm" data-t="serie">Série</button>
+      <button class="chip sm" data-t="fanim">Film d'anim.</button>
+      <button class="chip sm" data-t="film">Film</button>
+    </div>
+    <div class="row" id="fstat" style="margin-top:8px">
+      <span class="sub" style="font-weight:700;text-transform:uppercase;font-size:10px;letter-spacing:.1em">Statut</span>
+      <button class="chip sm active" data-s="all">Tous</button>
+      <button class="chip sm" data-s="avoir">À voir</button>
+      <button class="chip sm" data-s="encours">En cours</button>
+      <button class="chip sm" data-s="vu">Vu</button>
+    </div>
+    <div class="row" id="fgenre" style="margin-top:8px">
+      <span class="sub" style="font-weight:700;text-transform:uppercase;font-size:10px;letter-spacing:.1em">Genre</span>
+    </div>
+    <div class="row" style="margin-top:10px;justify-content:space-between">
+      <div class="sub">Affichés : <b id="count" style="color:var(--text)">0</b></div>
+      <button class="btn ghost sm" id="reset">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="card" style="padding:0">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th data-k="t">Titre</th>
+          <th data-k="ty">Type</th>
+          <th data-k="ep">Ép./Dur.</th>
+          <th data-k="y">Année</th>
+          <th data-k="s">Statut</th>
+          <th data-k="g">Genre</th>
+          <th data-k="m">Temps</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="editModal"><div class="sheet">
+  <h3 class="title" id="editTitle">Ajouter</h3>
+  <div class="form-grid">
+    <div class="full"><label>Titre</label><input id="fTitre"/></div>
+    <div><label>Type</label><select id="fType">
+      <option value="film">Film</option><option value="serie">Série</option>
+      <option value="anime">Animé</option><option value="fanim">Film d'animation</option>
+    </select></div>
+    <div><label>Année</label><input id="fAnnee" type="number" min="1900" max="2100"/></div>
+    <div><label>Ép./Durée (texte)</label><input id="fEp" placeholder="ex: 2h12 ou 12 ép."/></div>
+    <div><label>Durée totale (minutes)</label><input id="fMin" type="number" min="0"/></div>
+    <div class="full"><label>Genre (séparés par /)</label><input id="fGenre" placeholder="Action/Comédie"/></div>
+  </div>
+  <hr/>
+  <div class="row" style="justify-content:space-between">
+    <button class="btn ghost sm" id="delBtn" style="color:var(--danger)">🗑 Supprimer</button>
+    <div class="row">
+      <button class="btn ghost" onclick="document.getElementById('editModal').classList.remove('on')">Annuler</button>
+      <button class="btn primary" id="saveBtn">Enregistrer</button>
+    </div>
+  </div>
+</div></div>
+
+<div class="modal" id="paletteModal"><div class="sheet">
+  <h3 class="title">Palette & thème</h3>
+  <div class="row" id="paletteList"></div>
+  <hr/>
+  <div class="row" style="justify-content:space-between"><span>Mode</span>
+    <div class="row"><button class="btn sm" data-theme="light">☀ Clair</button><button class="btn sm" data-theme="dark">🌙 Nuit</button></div>
+  </div>
+  <hr/>
+  <button class="btn primary" style="width:100%" onclick="document.getElementById('paletteModal').classList.remove('on')">Fermer</button>
+</div></div>
+
+<script>
+const DATA=[
+ // ===== FILMS =====
+ ["Her","film","2h06",126,2013,"Romance/SF"],
+ ["Sorgoï Prakov, My European Dream","film","1h28",88,2013,"Drame"],
+ ["The Visitor","film","1h44",104,2007,"Drame"],
+ ["Rush Hour","film","1h38",98,1998,"Action/Comédie"],
+ ["Rush Hour 2","film","1h30",90,2001,"Action/Comédie"],
+ ["Rush Hour 3","film","1h31",91,2007,"Action/Comédie"],
+ ["Shaolin Soccer","film","1h53",113,2001,"Action/Comédie"],
+ ["Kung Fu Hustle","film","1h39",99,2004,"Action/Comédie"],
+ ["Hard Candy","film","1h44",104,2005,"Thriller"],
+ ["Dark Water","film","1h45",105,2005,"Horreur"],
+ ["Parasite","film","2h12",132,2019,"Thriller"],
+ ["Nos étoiles contraires","film","2h06",126,2014,"Romance"],
+ ["F1","film","2h35",155,2025,"Action"],
+ ["Warrior","film","2h20",140,2011,"Drame/Sport"],
+ ["Get Out","film","1h44",104,2017,"Horreur"],
+ ["DOA","film","2h00",120,2026,"Drame"],
+ ["The Shape of Water","film","2h03",123,2017,"Romance/Fantastique"],
+ ["A Star Is Born","film","2h16",136,2018,"Drame/Musical"],
+ ["Inside Llewyn Davis","film","1h45",105,2013,"Drame"],
+ ["The Grand Budapest Hotel","film","1h39",99,2014,"Comédie"],
+ ["Transformers","film","2h24",144,2007,"Action/SF"],
+ ["Transformers: La Revanche","film","2h30",150,2009,"Action/SF"],
+ ["Transformers 3","film","2h34",154,2011,"Action/SF"],
+ ["Transformers: L'Âge de l'extinction","film","2h45",165,2014,"Action/SF"],
+ ["Transformers: The Last Knight","film","2h29",149,2017,"Action/SF"],
+ ["La Planète des singes : Les Origines","film","1h45",105,2011,"SF"],
+ ["La Planète des singes : L'Affrontement","film","2h11",131,2014,"SF"],
+ ["La Planète des singes : Suprématie","film","2h22",142,2017,"SF"],
+ ["Planète des singes : Le Nouveau Royaume","film","2h25",145,2024,"SF"],
+ ["La La Land","film","2h08",128,2016,"Romance/Musical"],
+ ["Doctor Strange","film","1h55",115,2016,"Action/Fantastique"],
+ ["Doctor Strange in the Multiverse of Madness","film","2h06",126,2022,"Action/Fantastique"],
+ ["Mad Max: Fury Road","film","2h00",120,2015,"Action/SF"],
+ ["Bad Boys","film","1h59",119,1995,"Action/Comédie"],
+ ["Bad Boys II","film","2h27",147,2003,"Action/Comédie"],
+ ["Bad Boys for Life","film","2h04",124,2020,"Action/Comédie"],
+ ["Bad Boys: Ride or Die","film","1h55",115,2024,"Action/Comédie"],
+ ["Pirates des Caraïbes : La Malédiction du Black Pearl","film","2h23",143,2003,"Aventure"],
+ ["Pirates des Caraïbes : Le Secret du coffre maudit","film","2h31",151,2006,"Aventure"],
+ ["Pirates des Caraïbes : Jusqu'au bout du monde","film","2h49",169,2007,"Aventure"],
+ ["Pirates des Caraïbes : La Fontaine de jouvence","film","2h17",137,2011,"Aventure"],
+ ["Pirates des Caraïbes : La Vengeance de Salazar","film","2h09",129,2017,"Aventure"],
+ ["Drive","film","1h40",100,2011,"Thriller"],
+ ["Manchester by the Sea","film","2h17",137,2016,"Drame"],
+ ["Once Upon a Time in Hollywood","film","2h41",161,2019,"Drame"],
+ ["Crows Zero","film","2h10",130,2007,"Action"],
+ ["Crows Zero II","film","2h13",133,2009,"Action"],
+ ["Logan","film","2h17",137,2017,"Action/Drame"],
+ ["Ray","film","2h32",152,2004,"Biopic/Musical"],
+ ["12 Hommes en colère","film","1h36",96,1957,"Drame"],
+ ["Master and Commander","film","2h18",138,2003,"Aventure"],
+ ["A History of Violence","film","1h36",96,2005,"Thriller"],
+ ["The Nice Guys","film","1h56",116,2016,"Comédie/Action"],
+ ["Vampires en toute intimité","film","1h26",86,2014,"Comédie/Horreur"],
+ ["The Machinist","film","1h41",101,2004,"Thriller"],
+ ["Funny Games (1997)","film","1h51",111,1997,"Thriller"],
+ ["Funny Games U.S.","film","1h51",111,2007,"Thriller"],
+ ["Memento","film","1h53",113,2000,"Thriller"],
+ ["Black Swan","film","1h48",108,2010,"Thriller"],
+ ["La Liste de Schindler","film","3h15",195,1993,"Drame/Historique"],
+ ["Le Parrain","film","2h55",175,1972,"Drame"],
+ ["Le Parrain II","film","3h22",202,1974,"Drame"],
+ ["American History X","film","1h59",119,1998,"Drame"],
+ ["Les Gardiens de la Galaxie","film","2h01",121,2014,"Action/SF"],
+ ["Les Gardiens de la Galaxie 2","film","2h16",136,2017,"Action/SF"],
+ ["Les Gardiens de la Galaxie 3","film","2h30",150,2023,"Action/SF"],
+ ["Tu ne tueras point","film","2h19",139,2016,"Guerre/Drame"],
+ ["Le Dernier Train pour Busan","film","1h58",118,2016,"Horreur"],
+ ["Ni chaînes ni maîtres","film","1h38",98,2024,"Drame/Historique"],
+ ["Le Comte de Monte-Cristo","film","2h58",178,2024,"Aventure"],
+ ["La Nuit se traîne","film","1h36",96,2024,"Thriller"],
+ ["Oppenheimer","film","3h00",180,2023,"Biopic/Drame"],
+ ["Malcolm X","film","3h22",202,1992,"Biopic"],
+ ["12 Years a Slave","film","2h14",134,2013,"Drame/Historique"],
+ ["Black Panther","film","2h14",134,2018,"Action"],
+ ["Black Panther: Wakanda Forever","film","2h41",161,2022,"Action"],
+ ["Les Figures de l'ombre","film","2h07",127,2016,"Biopic/Drame"],
+ ["Sinners","film","2h17",137,2025,"Horreur"],
+ ["District 9","film","1h52",112,2009,"SF"],
+ ["Timbuktu","film","1h36",96,2014,"Drame"],
+ ["Astérix & Obélix : Mission Cléopâtre","film","1h47",107,2002,"Comédie"],
+ ["RRR","film","3h07",187,2022,"Action/Drame"],
+ ["Devdas","film","3h05",185,2002,"Romance/Drame"],
+ ["Avengers","film","2h23",143,2012,"Action"],
+ ["Avengers: L'Ère d'Ultron","film","2h21",141,2015,"Action"],
+ ["Avengers: Infinity War","film","2h29",149,2018,"Action"],
+ ["Avengers: Endgame","film","3h01",181,2019,"Action"],
+ ["Baahubali: Le Commencement","film","2h39",159,2015,"Action/Aventure"],
+ ["Baahubali 2: La Conclusion","film","2h47",167,2017,"Action/Aventure"],
+ ["Le Bon, la Brute et le Truand","film","2h58",178,1966,"Western"],
+ ["The Dark Knight","film","2h32",152,2008,"Action"],
+ ["Marriage Story","film","2h17",137,2019,"Drame"],
+ ["Watchmen : Les Gardiens","film","2h42",162,2009,"Action/SF"],
+ ["Kingsman: Services secrets","film","2h09",129,2014,"Action/Comédie"],
+ ["Kingsman: Le Cercle d'or","film","2h21",141,2017,"Action/Comédie"],
+ ["The King's Man : Première Mission","film","2h11",131,2021,"Action"],
+ ["Deadpool","film","1h48",108,2016,"Action/Comédie"],
+ ["Deadpool 2","film","1h59",119,2018,"Action/Comédie"],
+ ["Deadpool & Wolverine","film","2h08",128,2024,"Action/Comédie"],
+ ["Creed: L'Héritage de Rocky Balboa","film","2h13",133,2015,"Drame/Sport"],
+ ["Creed II","film","2h10",130,2018,"Drame/Sport"],
+ ["Creed III","film","1h56",116,2023,"Drame/Sport"],
+ ["FBI: Fausses blondes infiltrées","film","1h49",109,2004,"Comédie"],
+ ["Norbit","film","1h42",102,2007,"Comédie"],
+ ["Stomp the Yard","film","1h54",114,2007,"Drame/Musical"],
+ ["StreetDance","film","1h37",97,2010,"Drame/Musical"],
+ ["Grease","film","1h50",110,1978,"Musical/Romance"],
+ ["Yamakasi","film","1h30",90,2001,"Action"],
+ ["Hitch, Expert en séduction","film","1h58",118,2005,"Comédie/Romance"],
+ ["Sept vies","film","2h03",123,2008,"Drame"],
+ ["À la recherche du bonheur","film","1h57",117,2006,"Biopic/Drame"],
+ ["28 Jours plus tard","film","1h53",113,2002,"Horreur"],
+ ["L'Armée des morts","film","1h41",101,2004,"Horreur"],
+ ["Je suis une légende","film","1h41",101,2007,"SF/Horreur"],
+ ["I Am a Hero","film","2h06",126,2016,"Horreur"],
+ ["Bienvenue à Zombieland","film","1h28",88,2009,"Comédie/Horreur"],
+ ["Retour à Zombieland","film","1h39",99,2019,"Comédie/Horreur"],
+ ["Borat","film","1h24",84,2006,"Comédie"],
+ ["Scary Movie","film","1h28",88,2000,"Comédie"],
+ ["Scary Movie 2","film","1h23",83,2001,"Comédie/Horreur"],
+ ["Pootie Tang","film","1h21",81,2001,"Comédie"],
+ ["Un Prince à New York","film","1h57",117,1988,"Comédie/Romance"],
+ ["Boyz n the Hood","film","1h52",112,1991,"Drame"],
+ ["Friday","film","1h31",91,1995,"Comédie"],
+ ["Drunken Master","film","1h51",111,1978,"Action/Comédie"],
+ ["Drunken Master II","film","1h42",102,1994,"Action/Comédie"],
+ ["Rumble in the Bronx","film","1h27",87,1995,"Action"],
+ ["Police Story","film","1h41",101,1985,"Action"],
+ ["Fast & Furious 5","film","2h10",130,2011,"Action"],
+ ["Fast & Furious 7","film","2h17",137,2015,"Action"],
+ ["Fast & Furious 8","film","2h16",136,2017,"Action"],
+ ["One of Them Days","film","1h37",97,2025,"Comédie"],
+ ["American Fiction","film","1h57",117,2023,"Comédie/Drame"],
+ ["The Woman King","film","2h15",135,2022,"Action/Historique"],
+ ["King Richard","film","2h24",144,2021,"Biopic/Sport"],
+ ["Selma","film","2h08",128,2014,"Biopic/Historique"],
+ ["Harry Potter à l'école des sorciers","film","2h32",152,2001,"Fantastique"],
+ ["Harry Potter et la Chambre des secrets","film","2h41",161,2002,"Fantastique"],
+ ["Harry Potter et le Prisonnier d'Azkaban","film","2h22",142,2004,"Fantastique"],
+ ["Harry Potter et la Coupe de feu","film","2h37",157,2005,"Fantastique"],
+ ["Harry Potter et l'Ordre du Phénix","film","2h18",138,2007,"Fantastique"],
+ ["Harry Potter et le Prince de sang-mêlé","film","2h33",153,2009,"Fantastique"],
+ ["Harry Potter et les Reliques de la Mort – Partie 1","film","2h26",146,2010,"Fantastique"],
+ ["Harry Potter et les Reliques de la Mort – Partie 2","film","2h10",130,2011,"Fantastique"],
+ ["La Ligne verte","film","3h09",189,1999,"Drame/Fantastique"],
+ ["Seven","film","2h07",127,1995,"Thriller/Crime"],
+ ["Les Évadés","film","2h22",142,1994,"Drame"],
+ ["Pulp Fiction","film","2h34",154,1994,"Crime"],
+ ["Fight Club","film","2h19",139,1999,"Drame/Thriller"],
+ ["La Cité de Dieu","film","2h10",130,2002,"Crime/Drame"],
+ ["Django Unchained","film","2h45",165,2012,"Western"],
+ ["Sin City","film","2h04",124,2005,"Thriller/Crime"],
+ ["Shutter Island","film","2h18",138,2010,"Thriller"],
+ ["Le Loup de Wall Street","film","3h00",180,2013,"Biopic/Comédie"],
+ ["Sixième Sens","film","1h47",107,1999,"Thriller"],
+ ["Le Labyrinthe de Pan","film","1h59",119,2006,"Fantastique/Guerre"],
+ ["Us","film","1h56",116,2019,"Horreur"],
+ ["Le Silence des Agneaux","film","2h18",138,1991,"Thriller"],
+ ["The Thing","film","1h49",109,1982,"Horreur/SF"],
+ ["REC","film","1h15",75,2007,"Horreur"],
+ ["Le Dictateur","film","1h23",83,2012,"Comédie"],
+ ["Your Name","film","1h46",106,2016,"Romance/Fantastique"],
+ ["Les Enfants Loups","film","1h57",117,2012,"Drame/Fantastique"],
+ ["Je veux manger ton pancréas","film","1h49",109,2018,"Drame/Romance"],
+ ["Come and See","film","2h22",142,1985,"Guerre/Drame"],
+ ["Requiem for a Dream","film","1h42",102,2000,"Drame"],
+ ["Hérédité","film","2h07",127,2018,"Horreur"],
+ ["Suicide Club","film","1h39",99,2001,"Horreur"],
+ ["Monsieur et Madame Adelman","film","2h00",120,2017,"Romance/Drame"],
+ ["Hot Fuzz","film","2h01",121,2007,"Comédie/Action"],
+
+ // ===== FILMS D'ANIMATION =====
+ ["Dragons","fanim","1h38",98,2010,"Aventure"],
+ ["Dragons 2","fanim","1h42",102,2014,"Aventure"],
+ ["Dragons 3 : Le Monde caché","fanim","1h44",104,2019,"Aventure"],
+ ["Le Roi Lion","fanim","1h28",88,1994,"Aventure"],
+ ["Le Roi Lion 2 : L'Honneur de la tribu","fanim","1h21",81,1998,"Aventure"],
+ ["Aladdin","fanim","1h30",90,1992,"Aventure"],
+ ["Soul","fanim","1h40",100,2020,"Comédie/Drame"],
+ ["Vaiana, la légende du bout du monde","fanim","1h47",107,2016,"Aventure"],
+ ["Vaiana 2","fanim","1h40",100,2024,"Aventure"],
+ ["Raiponce","fanim","1h40",100,2010,"Aventure"],
+ ["A Silent Voice","fanim","2h09",129,2016,"Drame"],
+ ["Les Enfants du temps","fanim","1h54",114,2019,"Romance/Fantastique"],
+ ["Le Garçon et la Bête","fanim","1h59",119,2015,"Aventure"],
+ ["Ne Zha","fanim","1h50",110,2019,"Action/Aventure"],
+ ["Ne Zha 2","fanim","2h24",144,2025,"Action/Aventure"],
+ ["Spider-Man: New Generation","fanim","1h57",117,2018,"Action"],
+ ["Spider-Man: Across the Spider-Verse","fanim","2h20",140,2023,"Action"],
+ ["Madagascar","fanim","1h26",86,2005,"Comédie/Aventure"],
+ ["Les Indestructibles","fanim","1h55",115,2004,"Action/Aventure"],
+ ["Les Indestructibles 2","fanim","1h58",118,2018,"Action/Aventure"],
+ ["Mulan","fanim","1h28",88,1998,"Aventure"],
+ ["The Bad Guys","fanim","1h40",100,2022,"Comédie/Aventure"],
+ ["The Bad Guys 2","fanim","1h40",100,2025,"Comédie/Aventure"],
+ ["Coco","fanim","1h45",105,2017,"Aventure/Fantastique"],
+ ["Le Géant de fer","fanim","1h26",86,1999,"Aventure"],
+ ["Les Nouveaux Héros","fanim","1h42",102,2014,"Aventure"],
+ ["Wall-E","fanim","1h38",98,2008,"SF/Aventure"],
+ ["Monstres & Cie","fanim","1h32",92,2001,"Comédie"],
+ ["Zootopie","fanim","1h48",108,2016,"Comédie/Aventure"],
+ ["Chicken Run","fanim","1h24",84,2000,"Comédie/Aventure"],
+ ["Robots","fanim","1h31",91,2005,"Comédie/Aventure"],
+ ["Toy Story 3","fanim","1h43",103,2010,"Comédie/Aventure"],
+ ["Vice Versa","fanim","1h35",95,2015,"Comédie"],
+ ["Vice Versa 2","fanim","1h36",96,2024,"Comédie"],
+ ["Princesse Mononoké","fanim","2h14",134,1997,"Aventure/Fantastique"],
+ ["Shrek","fanim","1h30",90,2001,"Comédie/Aventure"],
+ ["Shrek 3","fanim","1h33",93,2007,"Comédie/Aventure"],
+ ["Le Chat Potté","fanim","1h30",90,2011,"Aventure/Comédie"],
+ ["Le Chat Potté 2","fanim","1h42",102,2022,"Aventure/Comédie"],
+ ["Kung Fu Panda","fanim","1h32",92,2008,"Action/Comédie"],
+ ["Kung Fu Panda 2","fanim","1h30",90,2011,"Action/Comédie"],
+ ["Kung Fu Panda 3","fanim","1h35",95,2016,"Action/Comédie"],
+ ["Kung Fu Panda 4","fanim","1h34",94,2024,"Action/Comédie"],
+ ["Kirikou et la Sorcière","fanim","1h11",71,1998,"Aventure"],
+ ["Tous en scène","fanim","1h48",108,2016,"Comédie/Musical"],
+ ["Tous en scène 2","fanim","1h50",110,2021,"Comédie/Musical"],
+ ["Moi, moche et méchant","fanim","1h35",95,2010,"Comédie"],
+ ["Mars Express","fanim","1h23",83,2023,"SF"],
+ ["Numéro 9","fanim","1h19",79,2009,"SF"],
+ ["Souris City","fanim","1h25",85,2006,"Comédie/Aventure"],
+ ["Là-haut","fanim","1h36",96,2009,"Aventure"],
+ ["Look Back","fanim","58 min",58,2024,"Drame"],
+
+ // ===== SÉRIES =====
+ ["Tout le monde déteste Chris","serie","88 ép.",1320,2005,"Comédie"],
+ ["Le Jeu de la dame","serie","7 ép.",395,2020,"Drame"],
+ ["Lastman","serie","26 ép.",330,2016,"Action/Animation"],
+ ["Peaky Blinders","serie","36 ép.",2160,2013,"Drame/Crime"],
+ ["Top Boy","serie","30 ép.",1500,2011,"Drame/Crime"],
+ ["Power","serie","63 ép.",3150,2014,"Drame/Crime"],
+ ["Narcos","serie","30 ép.",1500,2015,"Drame/Crime"],
+ ["Snowfall","serie","53 ép.",2650,2017,"Drame/Crime"],
+ ["Arcane","serie","18 ép.",810,2021,"Action/Drame"],
+ ["Malcolm","serie","151 ép.",3322,2000,"Comédie"],
+ ["H","serie","71 ép.",1846,1998,"Comédie"],
+ ["Ma famille d'abord","serie","123 ép.",2706,2001,"Comédie"],
+ ["Famille Upshaw","serie","22 ép.",484,2021,"Comédie"],
+ ["South Park","serie","320 ép.",7040,1997,"Comédie"],
+ ["Empire","serie","102 ép.",4284,2015,"Drame"],
+ ["The Office (US)","serie","201 ép.",4422,2005,"Comédie"],
+ ["Black Mirror","serie","27 ép.",1620,2011,"SF/Thriller"],
+ ["Chernobyl","serie","5 ép.",300,2019,"Drame/Historique"],
+ ["Brooklyn Nine-Nine","serie","153 ép.",3366,2013,"Comédie"],
+ ["Community","serie","110 ép.",2420,2009,"Comédie"],
+ ["How I Met Your Mother","serie","208 ép.",4576,2005,"Comédie/Romance"],
+ ["Les Simpson","serie","750 ép.",16500,1989,"Comédie"],
+ ["True Detective","serie","32 ép.",1920,2014,"Thriller"],
+ ["American Horror Story","serie","124 ép.",5208,2011,"Horreur"],
+ ["The Haunting of Hill House","serie","10 ép.",600,2018,"Horreur"],
+ ["The Bear","serie","18 ép.",540,2022,"Drame"],
+ ["Shameless (UK)","serie","139 ép.",6255,2004,"Comédie/Drame"],
+ ["The Haunting of Bly Manor","serie","9 ép.",540,2020,"Horreur"],
+ ["Rick et Morty","serie","71 ép.",1562,2013,"Comédie/SF"],
+ ["Better Call Saul","serie","63 ép.",2835,2015,"Drame/Crime"],
+ ["Mr. & Mrs. Smith","serie","8 ép.",360,2024,"Action/Comédie"],
+ ["Invincible","serie","16 ép.",720,2021,"Action/Surnaturel"],
+ ["Dr House","serie","177 ép.",7434,2004,"Drame"],
+ ["Alchemy of Souls","serie","30 ép.",2100,2022,"Fantastique/Romance"],
+ ["Jeu de la mort (série)","serie","8 ép.",480,2023,"Thriller"],
+ ["Héros Fragile","serie","6 ép.",360,2024,"Drame"],
+ ["La vie portera ses fruits","serie","16 ép.",960,2023,"Drame"],
+ ["Good Boy (série coréenne)","serie","10 ép.",600,2025,"Thriller"],
+ ["Mon petit rené","serie","10 ép.",220,1990,"Comédie"],
+ ["The Boondocks","serie","55 ép.",1265,2005,"Comédie/Animation"],
+
+ // ===== ANIMÉS =====
+ ["Jujutsu Kaisen","anime","47 ép.",1081,2020,"Action/Surnaturel"],
+ ["Hunter x Hunter (2011)","anime","148 ép.",3404,2011,"Action/Aventure"],
+ ["Ranking of Kings","anime","23 ép.",529,2021,"Aventure/Fantastique"],
+ ["Demon Slayer","anime","56 ép.",1288,2019,"Action/Surnaturel"],
+ ["Mob Psycho 100","anime","50 ép.",1200,2016,"Action/Surnaturel"],
+ ["K Project","anime","26 ép.",624,2012,"Action/Surnaturel"],
+ ["Death Parade","anime","12 ép.",276,2015,"Drame/Surnaturel"],
+ ["Attack on Titan (SNK)","anime","94 ép.",2162,2013,"Action/Horreur"],
+ ["Fate/Zero","anime","25 ép.",600,2011,"Action/Fantastique"],
+ ["Youjo Senki","anime","12 ép.",288,2017,"Action/Fantastique"],
+ ["Le Mouvement de la Terre","anime","25 ép.",600,2024,"Drame/Historique"],
+ ["Your Lie in April","anime","22 ép.",484,2014,"Drame/Romance"],
+ ["Fruits Basket","anime","63 ép.",1449,2019,"Drame/Romance"],
+ ["Fullmetal Alchemist: Brotherhood","anime","64 ép.",1536,2009,"Action/Aventure"],
+ ["Anohana","anime","11 ép.",242,2011,"Drame"],
+ ["Angel Beats","anime","13 ép.",312,2010,"Action/Drame"],
+ ["Cautious Hero","anime","12 ép.",276,2019,"Action/Comédie"],
+ ["Haikyuu!!","anime","85 ép.",2040,2014,"Sport"],
+ ["Kuroko's Basketball","anime","75 ép.",1800,2012,"Sport"],
+ ["Hajime no Ippo","anime","75 ép.",1725,2000,"Sport"],
+ ["Frieren","anime","28 ép.",672,2023,"Aventure/Fantastique"],
+ ["Made in Abyss","anime","25 ép.",575,2017,"Aventure/Fantastique"],
+ ["Les Carnets de l'Apothicaire","anime","24 ép.",576,2023,"Mystère/Historique"],
+ ["Kaguya-sama: Love is War","anime","37 ép.",888,2019,"Comédie/Romance"],
+ ["Call of the Night","anime","13 ép.",299,2022,"Romance/Surnaturel"],
+ ["Vinland Saga","anime","48 ép.",1152,2019,"Action/Aventure"],
+ ["Parasyte","anime","24 ép.",552,2014,"Horreur/SF"],
+ ["Dandadan","anime","12 ép.",288,2024,"Action/Surnaturel"],
+ ["Delicious in Dungeon","anime","24 ép.",576,2024,"Aventure/Fantastique"],
+ ["Spy x Family","anime","36 ép.",864,2022,"Action/Comédie"],
+ ["Toradora!","anime","25 ép.",600,2008,"Comédie/Romance"],
+ ["Mushishi","anime","46 ép.",1058,2005,"Surnaturel"],
+ ["Golden Kamuy","anime","36 ép.",864,2018,"Aventure"],
+ ["Bloom (Kaoru Hana)","anime","13 ép.",300,2025,"Romance"],
+ ["Lord of Mysteries","anime","12 ép.",288,2025,"Fantastique"],
+ ["Cyberpunk: Edgerunners","anime","10 ép.",240,2022,"Action/SF"],
+ ["Terror in Resonance","anime","11 ép.",242,2014,"Thriller"],
+ ["Erased","anime","12 ép.",276,2016,"Thriller/Surnaturel"],
+ ["Summer Time Rendering","anime","25 ép.",575,2022,"Thriller/Surnaturel"],
+ ["Death Note","anime","37 ép.",851,2006,"Thriller/Surnaturel"],
+ ["Re:Zero","anime","63 ép.",1701,2016,"Fantastique/Drame"],
+ ["L'Atelier des Sorciers","anime","12 ép.",288,2025,"Fantastique"],
+ ["86 (Eighty Six)","anime","23 ép.",552,2021,"Action/Mecha"],
+ ["Heavenly Delusion","anime","13 ép.",312,2023,"Mystère/SF"],
+ ["Ao Ashi","anime","24 ép.",576,2022,"Sport"],
+ ["Devilman Crybaby","anime","10 ép.",250,2018,"Action/Horreur"],
+ ["GTO (Great Teacher Onizuka)","anime","43 ép.",1032,1999,"Comédie/Drame"],
+ ["Fire Force","anime","48 ép.",1152,2019,"Action/Surnaturel"],
+ ["My Hero Academia","anime","159 ép.",3657,2016,"Action/Surnaturel"],
+ ["Black Clover","anime","170 ép.",3910,2017,"Action/Fantastique"],
+ ["Samurai Champloo","anime","26 ép.",624,2004,"Action/Aventure"],
+ ["Steins;Gate","anime","24 ép.",576,2011,"SF/Thriller"],
+ ["Senyu","anime","26 ép.",130,2013,"Comédie/Fantastique"],
+];
+
+const ITEMS_K="watchlist.items.v1";
+
+const TYPES={anime:"b-anime",serie:"b-serie",film:"b-film",fanim:"b-fanim"};
+const TLBL={anime:"Animé",serie:"Série",film:"Film",fanim:"Film d'anim."};
+const PREFS_K="watchlist.prefs.v1";
+const STAT_K="watchlist-status-v1";
+const PALETTES=[
+  {id:"fire",c:["#ef4444","#f59e0b"]},
+  {id:"forest",c:["#16a34a","#65a30d"]},
+  {id:"ocean",c:["#2563eb","#06b6d4"]},
+  {id:"sunset",c:["#f43f5e","#f97316"]},
+  {id:"grape",c:["#7c3aed","#a855f7"]},
+  {id:"mint",c:["#10b981","#06b6d4"]},
+  {id:"rose",c:["#e11d48","#db2777"]},
+  {id:"midnight",c:["#6366f1","#8b5cf6"]},
+];
+
+function safeGet(k,fb){try{const v=localStorage.getItem(k);return v==null?fb:JSON.parse(v);}catch(e){return fb;}}
+function safeSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+let prefs=safeGet(PREFS_K,null)||{theme:"dark",palette:"fire"};
+const status=safeGet(STAT_K,{})||{};
+// Items persistés : seed depuis DATA si rien en storage
+let items=safeGet(ITEMS_K,null);
+if(!items||!Array.isArray(items)||!items.length){
+  items=DATA.map((d,i)=>({id:"seed_"+i,t:d[0],ty:d[1],ep:d[2],m:d[3],y:d[4],g:d[5]}));
+  safeSet(ITEMS_K,items);
+}
+function saveItems(){safeSet(ITEMS_K,items);}
+const state={type:"all",stat:"all",genre:null,q:"",sortK:"t",sortD:1};
+let editingId=null;
+
+function savePrefs(){safeSet(PREFS_K,prefs)}
+function applyTheme(){document.documentElement.dataset.theme=prefs.theme;document.documentElement.dataset.palette=prefs.palette;const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',prefs.theme==='dark'?'#0b0f1a':'#f5f7fb')}
+
+function getStat(id){return status[id]||"avoir"}
+function setStat(id,v){status[id]=v;safeSet(STAT_K,status)}
+function fmtH(m){if(!m)return"0h";const h=Math.floor(m/60),mn=m%60;return mn?h+"h"+String(mn).padStart(2,"0"):h+"h"}
+
+function allGenres(){const s=new Set();items.forEach(d=>d.g.split("/").forEach(g=>s.add(g.trim())));return [...s].sort()}
+
+function renderGenres(){
+  const c=document.getElementById("fgenre");
+  c.querySelectorAll(".chip").forEach(x=>x.remove());
+  allGenres().forEach(g=>{
+    const b=document.createElement("button");b.className="chip sm"+(state.genre===g?" active":"");b.textContent=g;b.dataset.g=g;
+    b.onclick=()=>{state.genre=state.genre===g?null:g;renderGenresActive();render();};
+    c.appendChild(b);
+  });
+}
+function renderGenresActive(){document.querySelectorAll("#fgenre .chip").forEach(b=>b.classList.toggle("active",b.dataset.g===state.genre))}
+
+function render(){
+  const tb=document.getElementById("tbody"),q=state.q.toLowerCase().trim();
+  let rows=items.map(d=>({id:d.id,t:d.t,ty:d.ty,ep:d.ep,m:d.m,y:d.y,g:d.g,s:getStat(d.id)}))
+    .filter(r=>(state.type==="all"||r.ty===state.type)
+      &&(state.stat==="all"||r.s===state.stat)
+      &&(!state.genre||r.g.split("/").map(x=>x.trim()).includes(state.genre))
+      &&(!q||r.t.toLowerCase().includes(q)||r.g.toLowerCase().includes(q)));
+  rows.sort((a,b)=>{const k=state.sortK;let va=a[k],vb=b[k];if(typeof va==="string"){va=va.toLowerCase();vb=vb.toLowerCase();}return va<vb?-state.sortD:va>vb?state.sortD:0;});
+  document.getElementById("count").textContent=rows.length;
+  if(!rows.length){tb.innerHTML='<tr><td colspan="8" class="empty">Aucun résultat</td></tr>';}
+  else{
+    tb.innerHTML=rows.map(r=>`<tr>
+      <td class="td-titre">${escapeHtml(r.t)}</td>
+      <td><span class="badge ${TYPES[r.ty]}">${TLBL[r.ty]}</span></td>
+      <td class="td-ep">${escapeHtml(r.ep)}</td>
+      <td class="td-annee">${r.y}</td>
+      <td><select class="statut-select ${r.s}" data-id="${r.id}">
+        <option value="avoir"${r.s==="avoir"?" selected":""}>À voir</option>
+        <option value="encours"${r.s==="encours"?" selected":""}>En cours</option>
+        <option value="vu"${r.s==="vu"?" selected":""}>Vu</option>
+      </select></td>
+      <td class="td-genre">${escapeHtml(r.g)}</td>
+      <td class="td-temps">${fmtH(r.m)}</td>
+      <td><div class="row-actions"><button class="iact" data-edit="${r.id}" title="Modifier">✎</button></div></td>
+    </tr>`).join("");
+    tb.querySelectorAll("select").forEach(sel=>sel.onchange=e=>{setStat(e.target.dataset.id,e.target.value);render();renderStats();});
+    tb.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openEdit(b.dataset.edit));
+  }
+  document.querySelectorAll("thead th").forEach(th=>{const k=th.dataset.k;if(!k)return;th.classList.toggle("sorted",k===state.sortK);if(k===state.sortK)th.dataset.dir=state.sortD>0?"▲":"▼";else th.removeAttribute("data-dir");});
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function renderStats(){
+  const tot=items.length;
+  const c=t=>items.filter(d=>d.ty===t).length;
+  const vus=items.filter(d=>getStat(d.id)==="vu");
+  const enc=items.filter(d=>getStat(d.id)==="encours").length;
+  const mins=vus.reduce((s,d)=>s+(d.m||0),0);
+  document.getElementById("stats").innerHTML=`
+    <div class="kpi"><b>${tot}</b><span>Total</span></div>
+    <div class="kpi"><b>${c("anime")}</b><span>Animés</span></div>
+    <div class="kpi"><b>${c("serie")}</b><span>Séries</span></div>
+    <div class="kpi"><b>${c("fanim")}</b><span>Films anim.</span></div>
+    <div class="kpi"><b>${c("film")}</b><span>Films</span></div>
+    <div class="kpi"><b>${vus.length}</b><span>Vus</span></div>
+    <div class="kpi"><b>${enc}</b><span>En cours</span></div>
+    <div class="kpi"><b>${fmtH(mins)}</b><span>Temps vu</span></div>`;
+}
+
+// ===== Modal édition =====
+function openEdit(id){
+  editingId=id;
+  const it=items.find(x=>x.id===id);
+  document.getElementById("editTitle").textContent=it?"Modifier":"Ajouter";
+  document.getElementById("fTitre").value=it?it.t:"";
+  document.getElementById("fType").value=it?it.ty:"film";
+  document.getElementById("fAnnee").value=it?it.y:new Date().getFullYear();
+  document.getElementById("fEp").value=it?it.ep:"";
+  document.getElementById("fMin").value=it?it.m:0;
+  document.getElementById("fGenre").value=it?it.g:"";
+  document.getElementById("delBtn").style.display=it?"inline-block":"none";
+  document.getElementById("editModal").classList.add("on");
+}
+document.getElementById("addBtn").onclick=()=>openEdit(null);
+document.getElementById("editModal").addEventListener("click",e=>{if(e.target.id==="editModal")e.target.classList.remove("on")});
+document.getElementById("saveBtn").onclick=()=>{
+  const t=document.getElementById("fTitre").value.trim();
+  if(!t){alert("Titre requis");return;}
+  const data={
+    t,ty:document.getElementById("fType").value,
+    y:+document.getElementById("fAnnee").value||new Date().getFullYear(),
+    ep:document.getElementById("fEp").value.trim(),
+    m:+document.getElementById("fMin").value||0,
+    g:document.getElementById("fGenre").value.trim()||"Autre"
+  };
+  if(editingId){const i=items.findIndex(x=>x.id===editingId);if(i>=0)items[i]={...items[i],...data};}
+  else{data.id="u_"+Date.now()+"_"+Math.random().toString(36).slice(2,6);items.push(data);}
+  saveItems();
+  document.getElementById("editModal").classList.remove("on");
+  renderGenres();renderStats();render();
+};
+document.getElementById("delBtn").onclick=()=>{
+  if(!editingId)return;
+  if(!confirm("Supprimer définitivement cet élément ?"))return;
+  items=items.filter(x=>x.id!==editingId);
+  delete status[editingId];safeSet(STAT_K,status);
+  saveItems();
+  document.getElementById("editModal").classList.remove("on");
+  renderGenres();renderStats();render();
+};
+
+document.getElementById("ftype").addEventListener("click",e=>{if(!e.target.dataset.t)return;state.type=e.target.dataset.t;document.querySelectorAll("#ftype .chip").forEach(p=>p.classList.toggle("active",p.dataset.t===state.type));render();});
+document.getElementById("fstat").addEventListener("click",e=>{if(!e.target.dataset.s)return;state.stat=e.target.dataset.s;document.querySelectorAll("#fstat .chip").forEach(p=>p.classList.toggle("active",p.dataset.s===state.stat));render();});
+document.getElementById("search").addEventListener("input",e=>{state.q=e.target.value;render();});
+document.getElementById("reset").addEventListener("click",()=>{state.type="all";state.stat="all";state.genre=null;state.q="";document.getElementById("search").value="";document.querySelectorAll("#ftype .chip").forEach(p=>p.classList.toggle("active",p.dataset.t==="all"));document.querySelectorAll("#fstat .chip").forEach(p=>p.classList.toggle("active",p.dataset.s==="all"));renderGenresActive();render();});
+document.querySelectorAll("thead th").forEach(th=>{if(!th.dataset.k)return;th.onclick=()=>{const k=th.dataset.k;if(state.sortK===k)state.sortD*=-1;else{state.sortK=k;state.sortD=1;}render();};});
+
+document.getElementById("themeBtn").onclick=()=>{prefs.theme=prefs.theme==='dark'?'light':'dark';savePrefs();applyTheme();};
+document.getElementById("paletteBtn").onclick=()=>{document.getElementById('paletteModal').classList.add('on');};
+document.getElementById("paletteModal").addEventListener("click",e=>{if(e.target.id==='paletteModal')e.target.classList.remove('on')});
+
+(function initPalettes(){
+  const c=document.getElementById("paletteList");
+  PALETTES.forEach(p=>{
+    const s=document.createElement("div");s.className="swatch"+(prefs.palette===p.id?" on":"");
+    s.style.background=`linear-gradient(135deg,${p.c[0]},${p.c[1]})`;
+    s.title=p.id;s.onclick=()=>{prefs.palette=p.id;savePrefs();applyTheme();document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('on'));s.classList.add('on');};
+    c.appendChild(s);
+  });
+  document.querySelectorAll('#paletteModal [data-theme]').forEach(b=>b.onclick=()=>{prefs.theme=b.dataset.theme;savePrefs();applyTheme();});
+})();
+
+applyTheme();renderGenres();renderStats();render();
+</script>
+</body>
+</html>
